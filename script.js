@@ -99,8 +99,7 @@
     }
     if(Ball_y<=10||Ball_y>=490)
         {   
-       dx*=-1;
-        dy*=-1;
+       Ball_dy *= -1;;
                 
     }
     }
@@ -147,6 +146,7 @@
     document.body.addEventListener("keydown",(e)=>
         {Button[e.key]=true;});
     document.body.addEventListener("keyup",(e)=>{Button[e.key]=false});
+
 
 
 
