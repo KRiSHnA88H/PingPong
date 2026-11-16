@@ -12,6 +12,7 @@
    let Ball_dy=0;//y velcoity of ball.
    let Score_A=0;
    let Score_B=0;
+   let isResetting=false;
 
     const Button={};
 
@@ -67,6 +68,7 @@
 
     function check_collision()
     {
+        
         //we check <=20 because 10 is for widht of rectangle and 10 for radius of ball    
         if(Ball_x<=pos_x1+20 && Ball_y>=pos_y1&&Ball_y<=pos_y1+100)
         {
@@ -90,11 +92,16 @@
             Ball_dx*=-1;
     }
 
-    if(Ball_x<=10||Ball_x>=490)
+    if((Ball_x<=9||Ball_x>=491) && (!isResetting))
     {
+        isResetting=true;
+        if(Ball_x<=9) Score_B++;
+        else Score_A++;
+
         
-        setTimeout(reset_ball, 500);
-       
+        setTimeout(()=>{
+            reset_ball();isResetting=false
+        },800);
         
     }
     if(Ball_y<=10||Ball_y>=490)
@@ -107,8 +114,10 @@
 
     function reset_ball()
     {
-        Ball_dx=-10;
+
+
         Ball_dy=0;
+        Ball_dx=-Ball_dx;
         Ball_x=250;
         Ball_y=250;
     }
@@ -126,12 +135,19 @@
         return Math.sqrt((x1-x2)**2+(y1-y2)**2);
     }
 
+    function display_score(id)
+    {
+        document.getElementById(id[0]).innerHTML="Score A: "+Score_A;
+        document.getElementById(id[1]).innerHTML="Score B: "+Score_B;
+    }
+
 
     function game_loop(){
         ctx.clearRect(0,0,500,500);
+        display_score(["A","B"]);
         update_paddles();
-        check_collision();
         move_ball();
+        check_collision();
         draw_paddle(pos_x1,pos_y1,10,100,"Blue");
         draw_paddle(500-7-10 ,pos_y2,10,100,"Red");
         draw_ball(Ball_x,Ball_y,10,"Red");
